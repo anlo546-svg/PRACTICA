@@ -1,0 +1,84 @@
+import java.util.Scanner;
+
+/**
+ *
+ * @author alumne
+ */
+public class ProjectName {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // 1. Demanar la lletra a cercar
+        System.out.println("Escriu una lletra:");
+        char lletraObjeciu = scanner.next().charAt(0);
+        
+        // Netejar el buffer (el salt de línia que queda després de llegir la lletra)
+        scanner.nextLine();    
+
+        String fraseMax = "";
+        int maxAparicions = -1; // Iniciem en -1 per assegurar que la primera frase s'agafi
+
+        boolean continuar = true;
+
+        // 2. Bucle per demanar frases
+        while (continuar) {
+            System.out.println("\nEscriu una frase:");
+            String fraseActual = scanner.nextLine();
+
+            // Comprovació per sortir del bucle
+            if (fraseActual.equals("fi")) {
+                continuar = false;
+            } else {
+                // 3. Cridar a la funció obligatòria
+                int aparicionsActuals = numCharsFrase(fraseActual, lletraObjeciu);
+
+                // 4. Comprovar si superem el rècord actual
+                if (aparicionsActuals > maxAparicions) {
+                    maxAparicions = aparicionsActuals;
+                    fraseMax = fraseActual;
+                }
+
+                // Mostrar resultat parcial
+                mostrarResultat(lletraObjeciu, fraseMax, maxAparicions);
+            }
+        }
+
+        // 5. Resultat final en acabar
+        System.out.println("--- PROGRAMA FINALITZAT ---");
+        if (maxAparicions != -1) {
+            mostrarResultat(lletraObjeciu, fraseMax, maxAparicions);
+        } else {
+            System.out.println("No s'ha introduït cap frase.");
+        }
+        
+        scanner.close();
+    }
+
+    // --- REQUISIT OBLIGATORI: Funció de recompte ---
+    /**
+     * Compta quantes vegades apareix una lletra en una frase.
+     * Nota: Per coincidir amb l'exemple (on 'A' compta per 'a'),
+     * fem la comparació ignorant majúscules/minúscules.
+     */
+    public static int numCharsFrase(String frase, char lletra) {
+        int comptador = 0;
+        
+        // Convertim tot a minúscules per comptar tant 'A' com 'a'
+        char lletraMin = Character.toLowerCase(lletra);
+        String fraseMin = frase.toLowerCase();
+
+        for (int i = 0; i < fraseMin.length(); i++) {
+            if (fraseMin.charAt(i) == lletraMin) {
+                comptador++;
+            }
+        }
+        return comptador;
+    }
+
+    // Mètode auxiliar per no repetir el codi del print
+    public static void mostrarResultat(char lletra, String frase, int quantitat) {
+        System.out.println("La frase amb més '" + lletra + "' és: \"" + frase + "\"");
+        System.out.println("Té " + quantitat + " '" + lletra + "'.");
+    }
+}
